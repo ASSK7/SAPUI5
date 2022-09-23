@@ -1,0 +1,77 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.dpzsample.controller.View1"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:f="sap.ui.layout.form">
+	<!--<Carousel id="idCaro" class="sapUiContentPadding" loop="true" width="20%" height="40%"-->
+	<!--          beforePageChanged="onBeforePageChanged"-->
+	<!--          pageChanged ="onPageChanged">-->
+	<!--	<pages>-->
+	<!--		<Image src="https://iveybusinessjournal.com/publication/what-engages-employees-the-most-or-the-ten-cs-of-employee-engagement/" alt="Example picture of speakers"/>-->
+	<!--	</pages>-->
+	<!--<Image src="https://uschamber-co.imgix.net/https%3A%2F%2Fs3.us-east-1.amazonaws.com%2Fco-assets%2Fassets%2Fimages%2Fteam-meeting3.jpg?auto=compress%2Cformat&crop=focalpoint&fit=crop&fp-x=0.5&fp-y=0.5&h=415&q=88&w=622&s=74224701576ca2f473993d6a30a43cac" alt="Example picture of USB flash drive"/>-->
+	<!--<Image src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Example picture of spotlight"/>-->
+	<!--		<pages>-->
+	<!--		<Image src="https://biz30.timedoctor.com/images/2020/01/employee-management.jpg" alt="Example picture of screw"/>-->
+	<!--	</pages>-->
+	<!--	</Carousel>-->
+	<App>
+		<pages>
+			<Page title="Employee Details">
+				<content>
+					<f:SimpleForm title="Enter Employee Details" editable="true" layout="ResponsiveGridLayout" labelSpanL="3" labelSpanM="4" labelSpanS="3"
+						columnsL="1" columnsM="1" emptySpanM="4" emptySpanL="4" emptySpanS="1">
+						<Toolbar>
+							<ToolbarSpacer></ToolbarSpacer>
+							<Button type="Emphasized" text="Create" press="onCreate"></Button>
+						</Toolbar>
+						<f:content>
+							<Label text="Employee Name"></Label>
+							<Input id="empName"></Input>
+							<Label text="Employee Id"></Label>
+							<Input id="empId"></Input>
+							<Label text="Employee City"></Label>
+							<Input id="empCity"></Input>
+							<Label text="Employee Designation"></Label>
+							<Input id="empDesig"></Input>
+							<Label text="Employee Country"></Label>
+							<Input id="empCountry"></Input>
+						</f:content>
+					</f:SimpleForm>
+					<Table id="idTab" items="{M1>/employeeSet}" visible="false">
+						<columns>
+							<Column>
+								<Label text="Employee Name"></Label>
+							</Column>
+							<Column>
+								<Label text="Employee Id"></Label>
+							</Column>
+							<Column>
+								<Label text="Employee City "></Label>
+							</Column>
+							<Column>
+								<Label text="Employee Designation"></Label>
+							</Column>
+							<Column>
+								<Label text="Employee Country"></Label>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<Text id="tName" text="{M1>Empname}"></Text>
+								<Text id="tId" text="{M1>Employeid}"></Text>
+								<Text id="tCity" text="{M1>Empcity}"></Text>
+								<Text id="tDesig" text="{M1>Empdesg}"></Text>
+								<Text id="tCountry" text="{M1>Empcountry}"></Text>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+				<footer>
+					<Toolbar>
+						<ToolbarSpacer></ToolbarSpacer>
+						<Button type="Emphasized" text="Display" press="onDisplay"></Button>
+						<Button type="Emphasized" text="Multiple Creation" press="onMCreate"></Button>
+					</Toolbar>
+				</footer>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
