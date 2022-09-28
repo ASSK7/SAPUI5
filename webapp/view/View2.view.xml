@@ -44,6 +44,10 @@
 						</items>
 					</Table>
 				</content>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button text="Submit" press="onSubmit" type="Emphasized"></Button>
+				</Toolbar>
 			</Page>
 		</pages>
 	</App>

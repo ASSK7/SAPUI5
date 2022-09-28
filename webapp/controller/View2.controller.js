@@ -31,41 +31,89 @@ sap.ui.define([
 			});
 
 		},
-		onAdd: function() {   // In this function adding am empty row on first in table
-           var table = this.getView().byId("idTable");
-          var items =  table.getItems(); // getting all items in table
-          table.removeAllItems(); // after storing items in an array, now removing items from table
-          
-           var oItem = new sap.m.ColumnListItem({   //creating an empty item with input fields
-           	cells : [
-           		new sap.m.Input({
-           			
-           		}),
-           		new sap.m.Input({
-           			
-           		}),
-           		new sap.m.Input({
-           			
-           		}),
-           		new sap.m.Input({
-           			
-           		}),
-           		new sap.m.Input({
-           			
-           		}),
-           	]
-           });
-           
-           table.addItem(oItem);  // adding that empty item to table at first
-           for(var i=0;i<items.length;i++){ //now adding remaining items in table
-           	   table.addItem(items[i]);
-           }
+		onAdd: function() { // In this function adding am empty row on first in table
+			var table = this.getView().byId("idTable");
+			var items = table.getItems(); // getting all items in table
+			table.removeAllItems(); // after storing items in an array, now removing items from table
+
+			var oItem = new sap.m.ColumnListItem({ //creating an empty item with input fields
+				cells: [
+					new sap.m.Input({
+
+					}),
+					new sap.m.Input({
+
+					}),
+					new sap.m.Input({
+
+					}),
+					new sap.m.Input({
+
+					}),
+					new sap.m.Input({
+
+					}),
+				]
+			});
+
+			table.addItem(oItem); // adding that empty item to table at first
+			for (var i = 0; i < items.length; i++) { //now adding remaining items in table
+				table.addItem(items[i]);
+			}
 		},
 		onDelete: function() {
 
 		},
 		onEdit: function() {
 
+		},
+		onSubmit: function() {
+			var oTable = this.getView().byId("idTable");
+			var selItems = oTable.getSelectedItems();
+			var aItems = [];
+			for (var i = 0; i < selItems.length; i++) {
+				var empId = selItems[i].getAggregation("cells")[0].getProperty("value");
+				var empName = selItems[i].getAggregation("cells")[1].getProperty("value");
+				var empDesig = selItems[i].getAggregation("cells")[2].getProperty("value");
+				var empCity = selItems[i].getAggregation("cells")[3].getProperty("value");
+				var empCtry = selItems[i].getAggregation("cells")[4].getProperty("value");
+				//Pushing to an array
+
+				aItems.push({
+					"Employeid": empId,
+					"Empname": empName,
+					"Empdesg": empDesig,
+					"Empmobile": "9867542812",
+					"Empcity": empCity,
+					"Empcountry": empCtry
+				});
+			}
+
+			//BATCH OPERATION CODE
+			var that = this;
+			// var service = '/sap/opu/odata/sap/ZEMP_DETAILS_SRV';
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZEMP_DETAILS_SRV/", true);
+			
+            
+            var aBatchCall = [];
+			for (var m = 0; m < aItems.length; m++) {
+				aBatchCall.push(oModel.createBatchOperation('/employeeSet', "POST", aItems[m]));
+			}
+			
+			
+			oModel.addBatchChangeOperations(aBatchCall);
+				oModel.setUseBatch(true);
+			
+			oModel.submitBatch(function(odata, oResponse, aErrorResponses) {
+					if (aErrorResponses == 0) {
+						 MessageBox.success("Record Saved Successfully");
+						 
+			         that._object();
+					} else {
+						MessageBox.error("Not saved");
+					}
+
+				});
 		}
 
 		/**
