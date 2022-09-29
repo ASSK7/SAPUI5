@@ -89,31 +89,27 @@ sap.ui.define([
 				});
 			}
 
-			//BATCH OPERATION CODE
+			//BATCH OPERATION CODE TO GET MULTIPLE CREATION
 			var that = this;
 			// var service = '/sap/opu/odata/sap/ZEMP_DETAILS_SRV';
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZEMP_DETAILS_SRV/", true);
-			
-            
-            var aBatchCall = [];
+
+			var aBatchCall = [];
 			for (var m = 0; m < aItems.length; m++) {
 				aBatchCall.push(oModel.createBatchOperation('/employeeSet', "POST", aItems[m]));
 			}
-			
-			
-			oModel.addBatchChangeOperations(aBatchCall);
-				oModel.setUseBatch(true);
-			
-			oModel.submitBatch(function(odata, oResponse, aErrorResponses) {
-					if (aErrorResponses == 0) {
-						 MessageBox.success("Record Saved Successfully");
-						 
-			         that._object();
-					} else {
-						MessageBox.error("Not saved");
-					}
 
-				});
+			oModel.addBatchChangeOperations(aBatchCall);
+			oModel.setUseBatch(true);
+			oModel.submitBatch(function(odata, oResponse, aErrorResponses) {
+				if (aErrorResponses == 0) {
+					MessageBox.success("Record Saved Successfully");
+					that._object();
+				} else {
+					MessageBox.error("Not saved");
+				}
+
+			});
 		}
 
 		/**
