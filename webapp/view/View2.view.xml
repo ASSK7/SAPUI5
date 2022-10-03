@@ -47,6 +47,7 @@
 				<footer>
 					<Toolbar>
 					<ToolbarSpacer/>
+					<Button id="idBtnUpdate" text="Update" press="onUpdate" type="Emphasized" visible="false"></Button>
 					<Button text="Submit" press="onSubmit" type="Emphasized"></Button>
 				</Toolbar>
 				</footer>

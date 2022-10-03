@@ -62,10 +62,40 @@ sap.ui.define([
 			}
 		},
 		onDelete: function() {
+           var table = this.getView().byId("idTable");
+			var selItems = table.getSelectedItems();
+			
+			var aItems = [];
+			for (var i = 0; i < selItems.length; i++) {
+				var empId = selItems[i].getAggregation("cells")[0].getProperty("text");
+                //employeeid is key field to delete a record
+				aItems.push({
+					"Employeid": empId
+				});
+			}
 
-		},
-		onEdit: function() {
+			//BATCH OPERATION CODE TO GET MULTIPLE CREATION
+			var that = this;
+			// var service = '/sap/opu/odata/sap/ZEMP_DETAILS_SRV';
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZEMP_DETAILS_SRV/", true);
 
+			var aBatchCall = [];
+			for (var m = 0; m < aItems.length; m++) {
+				var url = "/employeeSet('" + aItems[m].Employeid + "')";
+				aBatchCall.push(oModel.createBatchOperation(url, "DELETE"));
+			}
+
+			oModel.addBatchChangeOperations(aBatchCall);
+			oModel.setUseBatch(true);
+			oModel.submitBatch(function(odata, oResponse, aErrorResponses) {
+				if (aErrorResponses == 0) {
+					MessageBox.success("Record Deleted Successfully");
+					that._object();
+				} else {
+					MessageBox.error("Not deleted");
+				}
+
+			});
 		},
 		onSubmit: function() {
 			var oTable = this.getView().byId("idTable");
@@ -110,7 +140,106 @@ sap.ui.define([
 				}
 
 			});
+		},
+		onEdit: function() { //making table rows as editable
+		this.getView().byId("idBtnUpdate").setVisible(true); //initially Update button is not visible but when click on edit button then update button will be enabled
+		var that = this;
+			var aSelItems = this.getView().byId("idTable").getSelectedItems(); //getting selected items
+			var aAllItems = this.getView().byId("idTable").getItems(); //getting all items in table
+			var cells = Number(this.getView().byId("idTable").getItems()[0].getAggregation("cells").length); //getting number of cells(columns) in the table
+   
+			for (var j = 0; j < aSelItems.length; j++) { //looping selected itmes
+				for (var i = 0; i < aAllItems.length; i++) { //looping all items in table
+					if (aAllItems[i] === aSelItems[j]) {  //if selected item will match then we will take the index of the row
+						that.getView().byId("idTable").getItems()[i].destroyCells();
+						for (var k = 0; k < cells; k++) { //by looping the number of cells , we can add input fields to each cell
+							if (k == 0) {
+								that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({
+									value: "{M1>Employeid}",
+									editable: true
+								}));
+							} else if (k == 1) {
+
+								that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({
+									value: "{M1>Empname}",
+									editable: true
+								}));
+							} else if (k == 2) {
+
+							that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({
+									value: "{M1>Empdesg}",
+									editable: true
+								}));
+							} else if (k == 3) {
+
+								that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({
+									value: "{M1>Empcity}",
+									editable: true
+								}));
+							} else if (k == 4) {
+
+								that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({
+									value: "{M1>Empcountry}",
+									editable: true
+								}));
+							}
+						}
+
+					}
+
+				}
+			}
+
+		},
+		
+		onUpdate : function(){  //batch update
+			var table = this.getView().byId("idTable");
+			var selItems = table.getSelectedItems();
+			
+			var aItems = [];
+			for (var i = 0; i < selItems.length; i++) {
+				var empId = selItems[i].getAggregation("cells")[0].getProperty("value");
+				var empName = selItems[i].getAggregation("cells")[1].getProperty("value");
+				var empDesig = selItems[i].getAggregation("cells")[2].getProperty("value");
+				var empCity = selItems[i].getAggregation("cells")[3].getProperty("value");
+				var empCtry = selItems[i].getAggregation("cells")[4].getProperty("value");
+				//Pushing to an array
+
+				aItems.push({
+					"Employeid": empId,
+					"Empname": empName,
+					"Empdesg": empDesig,
+					"Empmobile": "9867542812",
+					"Empcity": empCity,
+					"Empcountry": empCtry
+				});
+			}
+
+			//BATCH OPERATION CODE TO GET MULTIPLE CREATION
+			var that = this;
+			// var service = '/sap/opu/odata/sap/ZEMP_DETAILS_SRV';
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZEMP_DETAILS_SRV/", true);
+
+			var aBatchCall = [];
+			for (var m = 0; m < aItems.length; m++) {
+				var url = "/employeeSet('" + aItems[m].Employeid + "')";
+				aBatchCall.push(oModel.createBatchOperation(url, "PUT", aItems[m]));
+			}
+
+			oModel.addBatchChangeOperations(aBatchCall);
+			oModel.setUseBatch(true);
+			oModel.submitBatch(function(odata, oResponse, aErrorResponses) {
+				if (aErrorResponses == 0) {
+					MessageBox.success("Record Updated Successfully");
+					that._object();
+				} else {
+					MessageBox.error("Not saved");
+				}
+
+			});
 		}
+			
+		
 
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
