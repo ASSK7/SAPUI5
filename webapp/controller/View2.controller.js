@@ -98,6 +98,7 @@ sap.ui.define([
 			for (var m = 0; m < aItems.length; m++) {
 				aBatchCall.push(oModel.createBatchOperation('/employeeSet', "POST", aItems[m]));
 			}
+<<<<<<< HEAD
 
 			oModel.addBatchChangeOperations(aBatchCall);
 			oModel.setUseBatch(true);
@@ -110,6 +111,71 @@ sap.ui.define([
 				}
 
 			});
+		},
+	onEdit: function() { //making table rows as editable
+		var that = this;
+			var aSelItems = this.getView().byId("idTable").getSelectedItems();
+			var aAllItems = this.getView().byId("idTable").getItems();
+			var cells = Number(this.getView().byId("idTable").getItems()[0].getAggregation("cells").length);
+   
+			for (var j = 0; j < aSelItems.length; j++) {
+				for (var i = 0; i < aAllItems.length; i++) {
+					if (aAllItems[i] === aSelItems[j]) {
+						that.getView().byId("idTable").getItems()[i].destroyCells(); //we are destroying the selected cells
+						for (var k = 0; k < cells; k++) { //we are taking count of cells and adding input field to each cell
+							if (k == 0) {
+								that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({ //adding the cells
+									value: "{M1>Employeid}",
+									editable: true
+								}));
+							} else if (k == 1) {
+
+								that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({
+									value: "{M1>Empname}",
+									editable: true
+								}));
+							} else if (k == 2) {
+
+							that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({
+									value: "{M1>Empdesg}",
+									editable: true
+								}));
+							} else if (k == 3) {
+
+								that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({
+									value: "{M1>Empcity}",
+									editable: true
+								}));
+							} else if (k == 4) {
+
+								that.getView().byId("idTable").getItems()[i].addCell(new sap.m.Input({
+									value: "{M1>Empcountry}",
+									editable: true
+								}));
+							}
+						}
+
+					}
+=======
+>>>>>>> 0392713debaf8def01664dbbc3230ef16f241f68
+
+<<<<<<< HEAD
+				}
+			}
+
+=======
+			oModel.addBatchChangeOperations(aBatchCall);
+			oModel.setUseBatch(true);
+			oModel.submitBatch(function(odata, oResponse, aErrorResponses) {
+				if (aErrorResponses == 0) {
+					MessageBox.success("Record Saved Successfully");
+					that._object();
+				} else {
+					MessageBox.error("Not saved");
+				}
+
+			});
+>>>>>>> 0392713debaf8def01664dbbc3230ef16f241f68
 		}
 
 		/**
