@@ -74,7 +74,7 @@ sap.ui.define([
 				});
 			}
 
-			//BATCH OPERATION CODE TO GET MULTIPLE CREATION
+			//BATCH OPERATION CODE TO GET MULTIPLE DELETE OPERATION
 			var that = this;
 			// var service = '/sap/opu/odata/sap/ZEMP_DETAILS_SRV';
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZEMP_DETAILS_SRV/", true);
@@ -215,7 +215,7 @@ sap.ui.define([
 				});
 			}
 
-			//BATCH OPERATION CODE TO GET MULTIPLE CREATION
+			//BATCH OPERATION CODE TO GET MULTIPLE UPDATION
 			var that = this;
 			// var service = '/sap/opu/odata/sap/ZEMP_DETAILS_SRV';
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZEMP_DETAILS_SRV/", true);
