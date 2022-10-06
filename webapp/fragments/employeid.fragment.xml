@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog title="Employee" draggable="true" contentWidth="15%" contentHeight="70%">     <!--ObjectListItem-->
+		<content>
+			<List id="idObjLst" items="{M1>/employeeSet}" headerText="Employee ID" mode="SingleSelectMaster" selectionChange="onObjListItem">
+				<items>
+					<ObjectListItem>
+						<attributes>     <!--left side-->
+							<ObjectAttribute text="{M1>Empname}"></ObjectAttribute>
+							<ObjectAttribute text="{M1>Employeid}"></ObjectAttribute>
+						</attributes>
+						
+						<firstStatus>  <!--right side-->
+							<ObjectStatus text="{M1>Empdesg}"></ObjectStatus>
+						</firstStatus>
+					</ObjectListItem>
+				</items>
+			</List>
+		</content>
+		<buttons>
+			<Button text="Close" type="Emphasized" press="onObjClose"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
