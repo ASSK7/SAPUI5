@@ -1,0 +1,5 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<SelectDialog confirm="onSDConfirm">
+		<!--List will be added in controller-->
+	</SelectDialog>
+</core:FragmentDefinition>

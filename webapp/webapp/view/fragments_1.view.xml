@@ -9,6 +9,14 @@
 						<Label text="Employee ID(Object List Item VH)"></Label>
 						<Input id="idObj" showValueHelp="true" valueLiveUpdate="true" liveChange="onLiveObjChange"
 						valueHelpRequest="onValueHelpRequest"></Input>
+						
+						<Label text="Employee ID(Table VH)"></Label>
+						<Input id="idObj2" showValueHelp="true" valueLiveUpdate="true" liveChange="onLiveTblChange"
+						valueHelpRequest="onTableVHRequest"></Input>
+						
+						<Label text="Employee ID(SelectDialog VH)"></Label>
+						<Input id="idObj3" showValueHelp="true" valueLiveUpdate="true" liveChange="onLiveSDChange"
+						valueHelpRequest="onSDVHRequest"></Input>
 					</f:SimpleForm>
 				</content>
 			</Page>

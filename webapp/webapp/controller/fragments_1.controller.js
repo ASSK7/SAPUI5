@@ -2,8 +2,9 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	'sap/ui/model/json/JSONModel',
 	'sap/ui/model/odata/v2/ODataModel',
-	'sap/m/MessageBox'
-], function(Controller, JSONModel, ODataModel, MessageBox) {
+	'sap/m/MessageBox',
+	"sap/ui/core/Fragment"
+], function(Controller, JSONModel, ODataModel, MessageBox, Fragment) {
 	"use strict";
 
 	return Controller.extend("com.dpZFRAGMENTS.controller.fragments_1", {
@@ -27,17 +28,66 @@ sap.ui.define([
 			});
 		},
 		onValueHelpRequest: function() { //for ObjectListItem
-			this.dialog = sap.ui.xmlfragment("com.dpZFRAGMENTS.fragments.employeid", this);
+			if (!this.dialog) { // if this.dialog is not assigned
+				this.dialog = sap.ui.xmlfragment("com.dpZFRAGMENTS.fragments.employeid", this);
+			}
 			this.getView().addDependent(this.dialog);
 			this.dialog.open();
 		},
-		onObjClose : function(){
+		onObjClose: function() {
 			this.dialog.close(this);
 		},
-		onObjListItem : function(oEvent){
+		onObjListItem: function(oEvent) {
 			var empId = oEvent.getParameter("listItem").getAggregation("attributes")[1].getProperty("text");
 			this.getView().byId("idObj").setValue(empId);
 			this.dialog.close(this);
+		},
+
+		//TABLE SELECT DIALOG
+		onTableVHRequest: function() {
+			if (!this.tdialog) { // if this.dialog is not assigned
+				this.tdialog = sap.ui.xmlfragment("com.dpZFRAGMENTS.fragments.tableVH", this);
+			}
+			this.getView().addDependent(this.tdialog);
+			this.tdialog.open();
+		},
+		onConfirm: function(oEvent) { //confirm event for Table Select Dialog
+			var empId = oEvent.getParameters().selectedItem.getAggregation("cells")[0].getProperty("text");
+			this.getView().byId("idObj2").setValue(empId);
+		},
+
+		//SELECT DIALOG
+		onSDVHRequest: function() {
+			var that = this;
+			//Another way of loading the fragment
+			if (!this.sDialog) {
+				Fragment.load({ //load function will work with latest src url
+					name: "com.dpZFRAGMENTS.fragments.selectDialog",
+					id: "idSD",
+					type: "XML",
+					controller: this
+				}).then(function(oDialog) {
+					oDialog.setTitle("Employee Details");
+					oDialog.bindAggregation("items",{
+						path: "M1>/employeeSet",
+						template: new sap.m.DisplayListItem({
+							label: "{M1>Employeid}",
+							value: "{M1>Empname}"
+						})
+					});
+					that.getView().addDependent(oDialog);
+					that.sDialog = oDialog;
+					oDialog.open();
+					// return oDialog;
+				});
+			}
+			else{
+			this.sDialog.open();
+			}
+		},
+		onSDConfirm : function(oEvent){
+			var empId = oEvent.getParameters().selectedItem.getProperty("label");
+			this.getView().byId("idObj3").setValue(empId);
 		}
 
 		/**
